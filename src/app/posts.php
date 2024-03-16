@@ -1,16 +1,18 @@
-<?
+<?php
+
 namespace App;
+
 use PDO;
 
 interface PostInterface
 {
-    public function getPosts();
-    public function addPost($name, $contents);
+    public function getPosts(): array; 
+    public function addPost(string $name, string $contents): void; 
 }
 
 abstract class AbstractPost implements PostInterface
 {
-    protected $pdo;
+    protected PDO $pdo;
 
     public function __construct(PDO $pdo)
     {
@@ -20,24 +22,13 @@ abstract class AbstractPost implements PostInterface
 
 class Post extends AbstractPost
 {
-    public $pdo;
-
-    public function __construct()
-    {
-        $this->pdo = new PDO(
-            'mysql:host=mysql;dbname=bss',
-            'root',
-            'password'
-        );
-    }
-
-    public function getPosts()
+    public function getPosts(): array 
     {
         $stmt = $this->pdo->query("SELECT * FROM post");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function addPost($name, $contents)
+    public function addPost(string $name, string $contents): void 
     {
         date_default_timezone_set('Asia/Tokyo');
         $created_at = date("Y-m-d H:i:s");
@@ -49,4 +40,3 @@ class Post extends AbstractPost
         $stmt->execute();
     }
 }
-

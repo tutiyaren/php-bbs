@@ -5,8 +5,14 @@ require '../app/posts.php';
 $name = $_POST["name"];
 $contents = $_POST["contents"];
 
-$send = new Post();
-$sent = $send->addPost($name, $contents)
+$pdo = new PDO(
+    'mysql:host=mysql;dbname=bss',
+    'root',
+    'password'
+);
+
+$send = new Post($pdo);
+$sent = $send->addPost($name, $contents);
 
 ?>
 

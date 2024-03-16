@@ -2,8 +2,14 @@
 use App\Post;
 require '../app/posts.php';
 
-$post = new Post();
-$posts = $post->getPosts();
+$pdo = new PDO(
+    'mysql:host=mysql;dbname=bss',
+    'root',
+    'password'
+);
+
+$send = new Post($pdo);
+$posts = $send->getPosts();
 
 ?>
 
